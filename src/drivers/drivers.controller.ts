@@ -1,20 +1,25 @@
-import { Controller, Post, Body, Get, UsePipes, ValidationPipe } from '@nestjs/common';
+import { 
+    Controller, Post, Body, Get, UsePipes, ValidationPipe, Patch
+} from '@nestjs/common';
 
-import { DriversService, CreateDriverDto } from './drivers.service';
+import { DriversService, CreateDriverDto, UpdateDriverDto } from './drivers.service';
+import { Driver } from './driver.schema';
+
 
 
 @Controller('drivers')
 export class DriversController {
     constructor(private  driversService: DriversService) {}
 
-    @Get()
-    pingPong() {
-        return 'something'
-    }
-    
     @Post('/create')
     @UsePipes(ValidationPipe)
-    async createDriver(@Body() createDriverDto: CreateDriverDto) {
+    async createDriver(@Body() createDriverDto: CreateDriverDto): Promise<Driver> {
         return await this.driversService.createDriver(createDriverDto);
+    }
+    
+    @Patch('/update-name')
+    @UsePipes(ValidationPipe)
+    async updateDriverName(@Body() updateDriverDto: UpdateDriverDto): Promise<Driver> {
+        return await this.driversService.updateDriverName(updateDriverDto);
     }
 }
