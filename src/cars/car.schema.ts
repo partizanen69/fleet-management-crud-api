@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types as MongooseTypes } from 'mongoose';
 
-import { CarStatus } from './cars.service';
+import { CarStatus } from './cars.enum';
 
 @Schema()
 export class Car extends Document {

@@ -1,12 +1,10 @@
 import { 
-    Controller, Post, UsePipes, ValidationPipe, Body,
-    // , Get, , , Patch
+    Controller, Post, UsePipes, ValidationPipe, Body, Patch,
 } from '@nestjs/common';
 
-import { CarsService, CreateCarDto, } from './cars.service';
+import { CreateCarDto, AssignDriverDto, ChangeCarStatusDto } from './cars.dto';
+import { CarsService } from './cars.service';
 import { Car } from './car.schema';
-
-
 
 @Controller('cars')
 export class CarsController {
@@ -14,13 +12,19 @@ export class CarsController {
 
     @Post('/create')
     @UsePipes(ValidationPipe)
-    async createDriver(@Body() createCarDto: CreateCarDto): Promise<Car> {
+    async createCar(@Body() createCarDto: CreateCarDto): Promise<Car> {
         return await this.carsService.createCar(createCarDto);
     }
     
-    // @Patch('/update-name')
-    // @UsePipes(ValidationPipe)
-    // async updateDriverName(@Body() updateDriverDto: UpdateDriverDto): Promise<Driver> {
-    //     return await this.driversService.updateDriverName(updateDriverDto);
-    // }
+    @Patch('/assign-driver')
+    @UsePipes(ValidationPipe)
+    async asssignDriverToTheCar(@Body() assignDriverDto: AssignDriverDto): Promise<Car> {
+        return await this.carsService.asssignDriverToTheCar(assignDriverDto);
+    }
+
+    @Patch('/change-car-status')
+    @UsePipes(new ValidationPipe({ transform: true }))
+    async chnageCarStatus(@Body() changeCarStatusDto: ChangeCarStatusDto): Promise<Car> {
+        return await this.carsService.changeCarStatus(changeCarStatusDto);
+    }
 }

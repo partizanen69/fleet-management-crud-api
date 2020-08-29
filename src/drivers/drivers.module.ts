@@ -11,5 +11,6 @@ import { Driver, DriverSchema } from './driver.schema';
   ],
   controllers: [ DriversController ],
   providers: [ DriversService ],
+  exports: [ DriversService ],
 })
 export class DriversModule {}

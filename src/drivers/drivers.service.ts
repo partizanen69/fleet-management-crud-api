@@ -40,6 +40,9 @@ export class DriversService {
         return updatedDriver;
     }
 
+    async getDriverById(id: string): Promise<Driver> {
+        return await this.driverModel.findById(id);
+    }
 }
 
 export class CreateDriverDto {
