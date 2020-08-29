@@ -120,4 +120,8 @@ export class CarsService {
 
         return updatedCar;
     }
+
+    async getCarById(id: string): Promise<Car> {
+        return await this.carModel.findById(id);
+    }
 }

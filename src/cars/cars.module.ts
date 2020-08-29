@@ -13,6 +13,7 @@ import { Car, CarSchema } from './car.schema';
   ],
   controllers: [ CarsController ],
   providers: [ CarsService ],
+  exports: [ CarsService ],
 })
 
 export class CarsModule {}
