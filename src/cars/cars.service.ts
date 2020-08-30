@@ -6,15 +6,16 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Car } from './car.schema';
 import { CreateCarDto, AssignDriverDto, ChangeCarStatusDto } from './cars.dto';
 import { CarStatus } from './cars.enum';
-
 import { DriversService } from '../drivers/drivers.service';
 import { Driver } from 'src/drivers/driver.schema';
+import { RabbitMQService } from 'src/rabbit-mq/rabbit-mq.service';
 
 @Injectable()
 export class CarsService {
     constructor(
         @InjectModel(Car.name) private carModel: Model<Car>,
-        private readonly driversService: DriversService
+        private readonly driversService: DriversService,
+        private readonly rabbitMQService: RabbitMQService,
     ) {}
     
     async createCar(createCarDto: CreateCarDto): Promise<Car> {
@@ -117,6 +118,12 @@ export class CarsService {
             { status },
             { new: true, useFindAndModify: false }
         );
+
+        this.rabbitMQService.send('car-change-status', {
+            carId: updatedCar._id,
+            status: updatedCar.status,
+            assignedDriver: updatedCar.assignedDriver,
+        });
 
         return updatedCar;
     }
